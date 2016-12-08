@@ -3,6 +3,7 @@ int rows;
 int cols;
 Cell[] grid;
 Cell current;
+ArrayList<Cell> stack = new ArrayList<Cell>();
 
 void setup(){
   size(600,600);  
@@ -22,31 +23,45 @@ void setup(){
 }
 
 void draw(){
-  //frameRate(1);
-  translate(scale/2,scale/2);
+  //frameRate(4);
+  //translate(scale/2,scale/2);
   for(int i = 0; i < grid.length; i++){
       grid[i].show();
   }
+  current.highlight();
   Cell next = current.getUnvisitedNeighbor(grid);
   if (next != null){
-     if (next.x < current.x){
-         current.sides.put("left", false);
-         next.sides.put("right", false);
-     }
-     else if (next.x > current.x){
-       current.sides.put("right", false);
-       next.sides.put("left", false);
-     }
-     else if (next.y < current.y){
-       current.sides.put("top", false);
-       next.sides.put("bottom", false);
-     }
-     else if (next.y > current.y){
-       current.sides.put("bottom", false);
-       next.sides.put("top", false);
+     removeWall(next, current);
+     if (!current.visited){
+       stack.add(current);
      }
      current.visited = true;
      current = next; 
+     return;
+  } else if (stack.size()>0) {
+      current.visited = true;  // duplicated in code, causes issues...
+      current = stack.get(stack.size()-1);
+      stack.remove(stack.size()-1);
+      return;
   }
-  current.highlight();
+}
+
+void removeWall(Cell a, Cell b){
+     if (a.x < b.x){
+         b.sides.put("left", false);
+         a.sides.put("right", false);
+     }
+     else if (a.x > b.x){
+       b.sides.put("right", false);
+       a.sides.put("left", false);
+     }
+     else if (a.y < b.y){
+       b.sides.put("top", false);
+       a.sides.put("bottom", false);
+     }
+     else if (a.y > b.y){
+       b.sides.put("bottom", false);
+       a.sides.put("top", false);
+     }
+  
 }

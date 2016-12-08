@@ -2,12 +2,12 @@ class Cell{
   int x;
   int y;
   boolean visited;
-  boolean current;
   HashMap<String,Boolean> sides;
   
   Cell(int x_,int y_){
     x = x_;
     y = y_;
+    visited = false;
     sides = new HashMap<String,Boolean>();
     sides.put("top", true);
     sides.put("left", true);
@@ -51,19 +51,19 @@ class Cell{
        ArrayList<Cell> PotentialNeighbors = new ArrayList<Cell>();
        int ind;
        ind = index(x, y-1);
-       if ( ind != -1 && !grid[ind].visited){
+       if ( ind != -1 && (!grid[ind].visited)){
            PotentialNeighbors.add(grid[ind]);
        }
        ind = index(x-1, y);
-       if ( ind != -1 && !grid[ind].visited){
+       if ( ind != -1 && (!grid[ind].visited)){
            PotentialNeighbors.add(grid[ind]);
        }
        ind = index(x, y+1);
-       if ( ind != -1 && !grid[ind].visited){
+       if ( ind != -1 && (!grid[ind].visited)){
            PotentialNeighbors.add(grid[ind]);
        }
        ind = index(x+1, y);
-       if ( ind != -1 && !grid[ind].visited){
+       if ( ind != -1 && (!grid[ind].visited)){
            PotentialNeighbors.add(grid[ind]);
        }
        if (PotentialNeighbors.size() > 0){
